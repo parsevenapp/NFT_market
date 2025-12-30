@@ -1,5 +1,4 @@
 import { useContract, useNFTs } from "@thirdweb-dev/react";
-import styles from "../styles/globals.css";
 
 const MARKETPLACE_ADDRESS = "0xa01C729Ee0Ee812faFa0096D2ccEA8D6e1De6ECb";
 
