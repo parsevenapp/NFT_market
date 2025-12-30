@@ -1,0 +1,22 @@
+body { margin: 0; padding: 0; font-family: 'Tahoma', sans-serif; background: #ffffff; color: #04111d; text-align: right; }
+.navbar { display: flex; flex-direction: row-reverse; align-items: center; justify-content: space-between; padding: 12px 30px; background: white; border-bottom: 1px solid #e5e8eb; position: sticky; top: 0; z-index: 100; }
+.logo-section { display: flex; flex-direction: row-reverse; align-items: center; gap: 12px; }
+.logo-box { width: 40px; height: 40px; background: #2081e2; border-radius: 10px; }
+.logo-text { font-size: 22px; font-weight: 900; }
+.search-box { flex: 1; margin: 0 40px; }
+.search-box input { width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e5e8eb; outline: none; text-align: right; }
+.hero { height: 500px; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.3)), url('https://opensea.io/static/images/heros/aquarium-hero.jpg'); background-size: cover; background-position: center; display: flex; align-items: center; justify-content: flex-end; padding: 0 60px; color: white; }
+.hero-content h1 { font-size: 48px; max-width: 700px; font-weight: 800; line-height: 1.3; }
+.hero-btns { display: flex; gap: 15px; margin-top: 35px; flex-direction: row-reverse; }
+.btn-blue { background: #2081e2; color: white; padding: 16px 35px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; }
+.btn-outline { background: rgba(255,255,255,0.15); color: white; padding: 16px 35px; border-radius: 12px; border: 1px solid white; font-weight: bold; backdrop-filter: blur(5px); }
+.nft-section { padding: 40px 60px; max-width: 1400px; margin: 0 auto; }
+.nft-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.nft-card { background: white; border-radius: 15px; border: 1px solid #e5e8eb; overflow: hidden; transition: 0.2s; cursor: pointer; }
+.nft-card img { width: 100%; height: 260px; object-fit: cover; }
+.nft-info { padding: 16px; }
+.nft-name { font-weight: 700; margin: 0; }
+.price-row { margin-top: 12px; }
+.label { font-size: 12px; color: #707a83; }
+.value { font-size: 15px; font-weight: 700; }
+
