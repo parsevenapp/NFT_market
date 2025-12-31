@@ -1,15 +1,92 @@
+:root {
+  --primary: #8a2be2;
+  --secondary: #00ffa3;
+  --bg: #0a0612;
+  --card-bg: rgba(255, 255, 255, 0.05);
+}
+
 body {
   margin: 0;
-  padding: 0;
-  background-color: #000;
+  background: var(--bg);
+  background-image: radial-gradient(circle at top right, #1a0b2e, #0a0612);
   color: white;
-  -webkit-font-smoothing: antialiased;
+  font-family: 'Segoe UI', Roboto, sans-serif;
 }
 
-* {
-  box-sizing: border-box;
+.container { min-height: 100vh; }
+
+.header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
 }
 
-button:active {
-  transform: scale(0.98);
+.logo-section { display: flex; align-items: center; gap: 12px; }
+.logo-icon { width: 30px; height: 30px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 15px var(--primary); }
+
+.nav-bar {
+  display: flex;
+  padding: 10px;
+  gap: 10px;
+  justify-content: center;
+}
+
+.nav-bar button {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #888;
+  padding: 10px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-bar button.active {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 25px;
+  padding: 20px;
+}
+
+.nft-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.3s;
+}
+
+.nft-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+
+.img-container img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+
+.nft-info { padding: 15px; text-align: center; }
+.price { color: var(--secondary); font-size: 1.2rem; font-weight: bold; }
+
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(15px);
+  padding: 30px;
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+}
+
+.sell-form input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #333;
+  color: white;
+  border-radius: 12px;
 }
