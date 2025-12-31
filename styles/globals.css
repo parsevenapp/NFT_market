@@ -1,15 +1,15 @@
-body { margin: 0; padding: 0; font-family: sans-serif; background: #fff; direction: rtl; }
-.navbar { display: flex; align-items: center; justify-content: space-between; padding: 15px; border-bottom: 1px solid #eee; }
-.logo-box { width: 30px; height: 30px; background: #2081e2; border-radius: 8px; margin-left: 10px; }
-.logo-text { font-size: 18px; font-weight: bold; }
-.hero { padding: 50px 20px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://opensea.io/static/images/heros/aquarium-hero.jpg'); background-size: cover; color: white; text-align: center; }
-.hero h1 { font-size: 26px; line-height: 1.4; margin-bottom: 25px; }
-.hero-btns { display: flex; justify-content: center; gap: 10px; }
-.btn-blue { background: #2081e2; color: white; padding: 12px 20px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-.btn-outline { background: rgba(255,255,255,0.2); color: white; padding: 12px 20px; border-radius: 10px; border: 1px solid #fff; font-weight: bold; backdrop-filter: blur(5px); }
-.nft-section { padding: 25px; }
-.nft-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
-.nft-card { border: 1px solid #eee; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-.nft-card img { width: 100%; height: 160px; object-fit: cover; }
-.nft-info { padding: 10px; text-align: center; }
-.nft-name { font-weight: bold; font-size: 14px; margin: 0; }
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button:active {
+  transform: scale(0.98);
+}
