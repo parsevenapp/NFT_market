@@ -5,20 +5,15 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
-    "@thirdweb-dev/react": "latest",
-    "@thirdweb-dev/sdk": "latest",
+    "@thirdweb-dev/react": "^4",
+    "@thirdweb-dev/sdk": "^4",
     "@thirdweb-dev/chains": "latest",
-    "ethers": "^5.7.2",
+    "ethers": "5.7.2",
     "next": "latest",
-    "react": "latest",
-    "react-dom": "latest"
-  },
-  "devDependencies": {
-    "eslint": "latest",
-    "eslint-config-next": "latest"
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   }
 }
