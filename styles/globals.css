@@ -1,92 +1,59 @@
 :root {
-  --primary: #8a2be2;
-  --secondary: #00ffa3;
-  --bg: #0a0612;
-  --card-bg: rgba(255, 255, 255, 0.05);
+  --bg: #09090b;
+  --card: #18181b;
+  --primary: #8b5cf6; /* Violet */
+  --accent: #06b6d4;  /* Cyan */
+  --text: #f4f4f5;
 }
 
 body {
   margin: 0;
-  background: var(--bg);
-  background-image: radial-gradient(circle at top right, #1a0b2e, #0a0612);
-  color: white;
-  font-family: 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-.container { min-height: 100vh; }
+.container { min-height: 100vh; display: flex; flex-direction: column; }
 
 .header {
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(0,0,0,0.3);
-  backdrop-filter: blur(10px);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px;
+  background: rgba(9, 9, 11, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  position: sticky; top: 0; z-index: 100;
 }
 
-.logo-section { display: flex; align-items: center; gap: 12px; }
-.logo-icon { width: 30px; height: 30px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 15px var(--primary); }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; }
+.brand-glow { width: 10px; height: 10px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 15px var(--primary); }
+.pro-tag { font-size: 0.8rem; background: var(--accent); color: #000; padding: 2px 6px; border-radius: 4px; margin-left: 5px; font-weight: bold; }
 
-.nav-bar {
-  display: flex;
-  padding: 10px;
-  gap: 10px;
-  justify-content: center;
-}
-
+.nav-bar { display: flex; justify-content: center; gap: 15px; padding: 20px; }
 .nav-bar button {
-  background: var(--card-bg);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #888;
-  padding: 10px 25px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: 0.3s;
+  background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #888;
+  padding: 10px 24px; border-radius: 30px; cursor: pointer; transition: all 0.3s ease; font-weight: 600;
 }
+.nav-bar button.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
 
-.nav-bar button.active {
-  background: var(--primary);
-  color: white;
-  box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+.content-area { padding: 20px; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 24px; }
+
+.card {
+  background: var(--card); border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 16px; overflow: hidden; transition: transform 0.2s;
 }
+.card:hover { transform: translateY(-5px); border-color: var(--primary); }
+.card-img img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+.card-info { padding: 16px; }
+.card-info h3 { margin: 0 0 10px 0; font-size: 1.1rem; }
+.price-row { display: flex; justify-content: space-between; color: #a1a1aa; font-size: 0.9rem; margin-bottom: 15px; }
+.price-val { color: var(--accent); font-weight: bold; font-size: 1rem; }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 25px;
-  padding: 20px;
-}
+.panel { background: var(--card); padding: 40px; border-radius: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+.loader-box { text-align: center; margin-top: 50px; color: var(--primary); }
+.spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
 
-.nft-card {
-  background: var(--card-bg);
-  border-radius: 20px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.1);
-  transition: 0.3s;
-}
-
-.nft-card:hover { transform: translateY(-10px); border-color: var(--primary); }
-
-.img-container img { width: 100%; aspect-ratio: 1; object-fit: cover; }
-
-.nft-info { padding: 15px; text-align: center; }
-.price { color: var(--secondary); font-size: 1.2rem; font-weight: bold; }
-
-.glass-card {
-  background: var(--card-bg);
-  backdrop-filter: blur(15px);
-  padding: 30px;
-  border-radius: 25px;
-  border: 1px solid rgba(255,255,255,0.1);
-  text-align: center;
-}
-
-.sell-form input {
-  width: 100%;
-  padding: 15px;
-  margin-bottom: 15px;
-  background: rgba(0,0,0,0.5);
-  border: 1px solid #333;
-  color: white;
-  border-radius: 12px;
-}
+@keyframes spin { to { transform: rotate(360deg); } }
