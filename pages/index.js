@@ -4,8 +4,9 @@ import {
 } from "@thirdweb-dev/react";
 import { useState, useEffect } from "react";
 
+// آدرس‌های ثابت و نهایی
 const MARKETPLACE_ADDR = "0xa01C729Ee0Ee812faFa0096D2ccEA8D6e1De6ECb";
-const NFT_COLLECTION_ADDR = "آدرس_قرارداد_NFT_تو"; // قرارداد NFT Collection خودت رو اینجا بذار
+const NFT_COLLECTION_ADDR = "0x61957635650222f7B626C839572D1b8B94A6487e"; 
 
 export default function Home() {
   const [tab, setTab] = useState("market");
@@ -26,7 +27,7 @@ export default function Home() {
           <div className="dot"></div>
           <h1>COSMIC <span className="badge">PRO</span></h1>
         </div>
-        <ConnectWallet theme="dark" btnTitle="Connect Wallet" />
+        <ConnectWallet theme="dark" />
       </header>
 
       <nav className="nav-cosmic">
@@ -38,7 +39,7 @@ export default function Home() {
       <main className="main-view">
         {tab === "market" && (
           <div className="grid">
-            {loadingMarket ? <div className="loader">Searching Galaxy...</div> : 
+            {loadingMarket ? <div className="loader">Searching Void...</div> : 
               listings?.length > 0 ? listings.map(l => (
                 <div key={l.id} className="nft-card">
                   <img src={l.asset.image} alt="nft" />
@@ -76,7 +77,7 @@ function MintView({ collectionAddr }) {
         <Web3Button
           contractAddress={collectionAddr}
           action={(contract) => contract.erc721.mint({ name, image: file })}
-          onSuccess={() => alert("Asset Minted!")}
+          onSuccess={() => alert("Asset Minted Successfully!")}
         >MINT NOW</Web3Button>
       </div>
     </div>
@@ -87,30 +88,33 @@ function InventoryView({ address, collectionAddr, market }) {
   const { contract: nftContract } = useContract(collectionAddr);
   const { data: ownedNFTs, isLoading } = useOwnedNFTs(nftContract, address);
   const { mutateAsync: createListing } = useCreateDirectListing(market);
-  const [listPrice, setListPrice] = useState("0.1");
+  const [listPrice, setListPrice] = useState("1");
 
   return (
     <div className="inventory-section">
-      <h2 className="section-title">Your Assets {address && `(${address.slice(0,6)}...)`}</h2>
+      <h2 className="section-title">Your Wallet {address && `(${address.slice(0,6)}...)`}</h2>
       <div className="grid">
-        {isLoading ? <p>Scanning Wallet...</p> : 
+        {isLoading ? <div className="loader">Scanning Assets...</div> : 
           ownedNFTs?.length > 0 ? ownedNFTs.map(nft => (
             <div key={nft.metadata.id} className="nft-card inv-card">
               <img src={nft.metadata.image} />
               <div className="nft-info">
                 <h3>{nft.metadata.name}</h3>
-                <input type="number" value={listPrice} onChange={(e) => setListPrice(e.target.value)} className="price-input" />
-                <Web3Button
-                  contractAddress={MARKETPLACE_ADDR}
-                  action={() => createListing({
-                    assetContractAddress: collectionAddr,
-                    tokenId: nft.metadata.id,
-                    pricePerToken: listPrice,
-                  })}
-                >LIST FOR SALE</Web3Button>
+                <div className="sale-controls">
+                  <input type="number" value={listPrice} onChange={(e) => setListPrice(e.target.value)} className="price-input" />
+                  <Web3Button
+                    contractAddress={MARKETPLACE_ADDR}
+                    action={() => createListing({
+                      assetContractAddress: collectionAddr,
+                      tokenId: nft.metadata.id,
+                      pricePerToken: listPrice,
+                    })}
+                    onSuccess={() => alert("Listed on Marketplace!")}
+                  >SELL</Web3Button>
+                </div>
               </div>
             </div>
-          )) : <p>No assets found. Mint something first!</p>
+          )) : <p className="empty-msg">No assets found. Try Minting one!</p>
         }
       </div>
     </div>
