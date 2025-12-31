@@ -1,18 +1,19 @@
 {
-  "name": "cosmic-market-pro",
-  "version": "1.0.0",
+  "name": "nft-marketplace-pro",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@thirdweb-dev/react": "3.14.0",
-    "@thirdweb-dev/sdk": "3.10.0",
+    "@thirdweb-dev/react": "^4.1.15",
+    "@thirdweb-dev/sdk": "^4.0.99",
     "@thirdweb-dev/chains": "latest",
-    "ethers": "5.7.2",
-    "next": "13.0.0",
+    "ethers": "^5.7.2",
+    "next": "13.4.19",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   }
