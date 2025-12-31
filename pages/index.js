@@ -1,116 +1,127 @@
-import { 
-  ConnectWallet, useContract, useDirectListings, 
-  Web3Button, useAddress, useOwnedNFTs, useCreateDirectListing 
-} from "@thirdweb-dev/react";
+import { ConnectWallet, useAddress, useContract, useCreateDirectListing, Web3Button, useDirectListings } from "@thirdweb-dev/react";
 import { useState, useEffect } from "react";
+import { Network, Alchemy } from "alchemy-sdk";
 
+// آدرس ثابت مارکت‌پلیس تو
 const MARKETPLACE_ADDR = "0xa01C729Ee0Ee812faFa0096D2ccEA8D6e1De6ECb";
-const NFT_COLLECTION_ADDR = "0x61957635650222f7B626C839572D1b8B94A6487e"; 
+// اینجا رو فعلاً خالی بذار تا قرارداد مینت خودت رو بسازی
+const MINT_CONTRACT_ADDR = "آدرس_قرارداد_مینت_تو_بعدا";
 
-export default function Home() {
-  const [tab, setTab] = useState("market");
-  const [mounted, setMounted] = useState(false);
+const alchemy = new Alchemy({
+  apiKey: "demo", // برای سرعت بیشتر بعداً از alchemy.com رایگان بگیر
+  network: Network.MATIC_MAINNET,
+});
+
+export default function UltimateMarketplace() {
   const address = useAddress();
+  const [tab, setTab] = useState("inventory");
+  const [userNFTs, setUserNFTs] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => { setMounted(true); }, []);
-
-  const { contract: market } = useContract(MARKETPLACE_ADDR, "marketplace-v3");
-  const { data: listings, isLoading: loadingMarket } = useDirectListings(market);
-
-  if (!mounted) return null;
+  // ۱. سیستم اسکن خودکار ولت (مثل OpenSea)
+  useEffect(() => {
+    async function scanWallet() {
+      if (!address || tab !== "inventory") return;
+      setLoading(true);
+      try {
+        const response = await alchemy.nft.getNftsForOwner(address);
+        setUserNFTs(response.ownedNfts);
+      } catch (err) { console.error("Scan Error", err); }
+      setLoading(false);
+    }
+    scanWallet();
+  }, [address, tab]);
 
   return (
-    <div className="container">
-      <header className="header">
-        <div className="brand">
-          <div className="dot"></div>
-          <h1>COSMIC <span className="badge">PRO</span></h1>
-        </div>
+    <div className="app-container">
+      <header className="main-header">
+        <div className="logo-section">COSMIC <span>MARKET v2</span></div>
         <ConnectWallet theme="dark" />
       </header>
 
-      <nav className="nav-cosmic">
-        <button className={tab === "market" ? "active" : ""} onClick={() => setTab("market")}>Market</button>
-        <button className={tab === "mint" ? "active" : ""} onClick={() => setTab("mint")}>Mint NFT</button>
-        <button className={tab === "inventory" ? "active" : ""} onClick={() => setTab("inventory")}>Inventory</button>
+      <nav className="mega-nav">
+        <button className={tab === "market" ? "active" : ""} onClick={() => setTab("market")}>EXPLORE MARKET</button>
+        <button className={tab === "inventory" ? "active" : ""} onClick={() => setTab("inventory")}>MY COLLECTION</button>
+        <button className={tab === "mint" ? "active" : ""} onClick={() => setTab("mint")}>MINT ENGINE</button>
       </nav>
 
-      <main className="main-view">
-        {tab === "market" && (
-          <div className="grid">
-            {loadingMarket ? <div className="loader">Loading Market...</div> : 
-              listings?.length > 0 ? listings.map(l => (
-                <div key={l.id} className="nft-card">
-                  <img src={l.asset.image} alt="nft" />
-                  <div className="nft-info">
-                    <h3>{l.asset.name}</h3>
-                    <p className="price">{l.currencyValuePerToken.displayValue} MATIC</p>
-                    <Web3Button 
-                      contractAddress={MARKETPLACE_ADDR} 
-                      action={() => market.directListings.buyFromListing(l.id, 1)}
-                    >Instant Buy</Web3Button>
-                  </div>
-                </div>
-              )) : <p className="empty-msg">No listings found.</p>
-            }
-          </div>
+      <main className="content-area">
+        {tab === "market" && <MarketSection />}
+        
+        {tab === "inventory" && (
+          <section>
+            <h2 className="section-title">Detected Assets in Wallet</h2>
+            {loading ? <div className="loader-neon">Scanning Blockchain...</div> : (
+              <div className="nft-grid">
+                {userNFTs.map((nft) => (
+                  <InventoryCard key={`${nft.contract.address}-${nft.tokenId}`} nft={nft} />
+                ))}
+              </div>
+            )}
+          </section>
         )}
 
-        {tab === "mint" && <MintView collectionAddr={NFT_COLLECTION_ADDR} />}
-        {tab === "inventory" && <InventoryView address={address} collectionAddr={NFT_COLLECTION_ADDR} market={market} />}
+        {tab === "mint" && (
+          <div className="mint-box">
+            <h2>Minting Interface</h2>
+            <p>این بخش آماده است؛ فقط کافیست قرارداد NFT خود را بسازید و آدرس آن را در کد قرار دهید.</p>
+            {/* بعد از ساخت قرارداد، فرم مینت اینجا قرار می‌گیرد */}
+          </div>
+        )}
       </main>
     </div>
   );
 }
 
-function MintView({ collectionAddr }) {
-  const [name, setName] = useState("");
-  const [file, setFile] = useState();
+// کارت اختصاصی اینونتوری با قابلیت فروش
+function InventoryCard({ nft }) {
+  const { contract: market } = useContract(MARKETPLACE_ADDR, "marketplace-v3");
+  const { mutateAsync: createListing } = useCreateDirectListing(market);
+  const [price, setPrice] = useState("0.1");
 
   return (
-    <div className="glass-panel">
-      <h2>Forge New NFT</h2>
-      <input type="text" placeholder="NFT Name" onChange={(e) => setName(e.target.value)} className="cosmic-input" />
-      <input type="file" onChange={(e) => setFile(e.target.files[0])} className="cosmic-input" />
-      <Web3Button
-        contractAddress={collectionAddr}
-        action={(contract) => contract.erc721.mint({ name, image: file })}
-        onSuccess={() => alert("Minted!")}
-      >MINT NOW</Web3Button>
+    <div className="nft-card-premium">
+      <img src={nft.media[0]?.gateway || "/placeholder.png"} />
+      <div className="card-body">
+        <h4>{nft.title || "Unnamed NFT"}</h4>
+        <p className="contract-tag">{nft.contract.name}</p>
+        <div className="sale-action">
+          <input type="number" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} />
+          <Web3Button
+            contractAddress={MARKETPLACE_ADDR}
+            action={() => createListing({
+              assetContractAddress: nft.contract.address,
+              tokenId: nft.tokenId,
+              pricePerToken: price,
+            })}
+            onSuccess={() => alert("Listed Successfully!")}
+          >LIST FOR SALE</Web3Button>
+        </div>
+      </div>
     </div>
   );
 }
 
-function InventoryView({ address, collectionAddr, market }) {
-  const { contract: nftContract } = useContract(collectionAddr);
-  const { data: ownedNFTs, isLoading } = useOwnedNFTs(nftContract, address);
-  const { mutateAsync: createListing } = useCreateDirectListing(market);
-  const [listPrice, setListPrice] = useState("1");
+function MarketSection() {
+  const { contract: market } = useContract(MARKETPLACE_ADDR, "marketplace-v3");
+  const { data: listings, isLoading } = useDirectListings(market);
 
+  if (isLoading) return <div className="loader-neon">Loading Market Listings...</div>;
   return (
-    <div className="inventory-section">
-      <h2 className="section-title">Your Inventory</h2>
-      <div className="grid">
-        {isLoading ? <p>Loading...</p> : 
-          ownedNFTs?.length > 0 ? ownedNFTs.map(nft => (
-            <div key={nft.metadata.id} className="nft-card inv-card">
-              <img src={nft.metadata.image} />
-              <div className="nft-info">
-                <h3>{nft.metadata.name}</h3>
-                <input type="number" value={listPrice} onChange={(e) => setListPrice(e.target.value)} className="price-input" />
-                <Web3Button
-                  contractAddress={MARKETPLACE_ADDR}
-                  action={() => createListing({
-                    assetContractAddress: collectionAddr,
-                    tokenId: nft.metadata.id,
-                    pricePerToken: listPrice,
-                  })}
-                >LIST SALE</Web3Button>
-              </div>
-            </div>
-          )) : <p>No NFTs found.</p>
-        }
-      </div>
+    <div className="nft-grid">
+      {listings?.map((l) => (
+        <div key={l.id} className="nft-card-premium">
+          <img src={l.asset.image} />
+          <div className="card-body">
+            <h4>{l.asset.name}</h4>
+            <p className="price-tag">{l.currencyValuePerToken.displayValue} MATIC</p>
+            <Web3Button 
+               contractAddress={MARKETPLACE_ADDR} 
+               action={() => market.directListings.buyFromListing(l.id, 1)}
+            >BUY NOW</Web3Button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
