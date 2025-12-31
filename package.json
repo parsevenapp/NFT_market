@@ -1,18 +1,24 @@
 {
-  "name": "my-nft-store",
-  "version": "1.0.0",
+  "name": "nft-marketplace",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@thirdweb-dev/react": "^4",
-    "@thirdweb-dev/sdk": "^4",
+    "@thirdweb-dev/react": "latest",
+    "@thirdweb-dev/sdk": "latest",
+    "@thirdweb-dev/chains": "latest",
     "ethers": "^5.7.2",
-    "next": "^14",
-    "react": "^18",
-    "react-dom": "^18"
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "eslint": "latest",
+    "eslint-config-next": "latest"
   }
 }
