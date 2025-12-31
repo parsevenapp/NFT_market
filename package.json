@@ -1,5 +1,5 @@
 {
-  "name": "cosmic-ultimate-pro",
+  "name": "cosmic-ultimate",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -8,11 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "@thirdweb-dev/react": "^4.1.20",
-    "@thirdweb-dev/sdk": "^4.0.44",
+    "@thirdweb-dev/react": "4.1.20",
+    "@thirdweb-dev/sdk": "4.0.44",
     "@thirdweb-dev/chains": "latest",
-    "alchemy-sdk": "^3.0.0",
-    "ethers": "^5.7.2",
+    "alchemy-sdk": "3.0.0",
+    "ethers": "5.7.2",
     "next": "13.4.12",
     "react": "18.2.0",
     "react-dom": "18.2.0"
