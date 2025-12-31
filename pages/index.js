@@ -4,7 +4,6 @@ import {
 } from "@thirdweb-dev/react";
 import { useState, useEffect } from "react";
 
-// آدرس‌های ثابت و نهایی
 const MARKETPLACE_ADDR = "0xa01C729Ee0Ee812faFa0096D2ccEA8D6e1De6ECb";
 const NFT_COLLECTION_ADDR = "0x61957635650222f7B626C839572D1b8B94A6487e"; 
 
@@ -39,7 +38,7 @@ export default function Home() {
       <main className="main-view">
         {tab === "market" && (
           <div className="grid">
-            {loadingMarket ? <div className="loader">Searching Void...</div> : 
+            {loadingMarket ? <div className="loader">Loading Market...</div> : 
               listings?.length > 0 ? listings.map(l => (
                 <div key={l.id} className="nft-card">
                   <img src={l.asset.image} alt="nft" />
@@ -52,7 +51,7 @@ export default function Home() {
                     >Instant Buy</Web3Button>
                   </div>
                 </div>
-              )) : <p className="empty-msg">No listings found in the market.</p>
+              )) : <p className="empty-msg">No listings found.</p>
             }
           </div>
         )}
@@ -70,16 +69,14 @@ function MintView({ collectionAddr }) {
 
   return (
     <div className="glass-panel">
-      <h2>Forge New Asset</h2>
-      <div className="form-group">
-        <input type="text" placeholder="NFT Name" onChange={(e) => setName(e.target.value)} className="cosmic-input" />
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} className="cosmic-input" />
-        <Web3Button
-          contractAddress={collectionAddr}
-          action={(contract) => contract.erc721.mint({ name, image: file })}
-          onSuccess={() => alert("Asset Minted Successfully!")}
-        >MINT NOW</Web3Button>
-      </div>
+      <h2>Forge New NFT</h2>
+      <input type="text" placeholder="NFT Name" onChange={(e) => setName(e.target.value)} className="cosmic-input" />
+      <input type="file" onChange={(e) => setFile(e.target.files[0])} className="cosmic-input" />
+      <Web3Button
+        contractAddress={collectionAddr}
+        action={(contract) => contract.erc721.mint({ name, image: file })}
+        onSuccess={() => alert("Minted!")}
+      >MINT NOW</Web3Button>
     </div>
   );
 }
@@ -92,29 +89,26 @@ function InventoryView({ address, collectionAddr, market }) {
 
   return (
     <div className="inventory-section">
-      <h2 className="section-title">Your Wallet {address && `(${address.slice(0,6)}...)`}</h2>
+      <h2 className="section-title">Your Inventory</h2>
       <div className="grid">
-        {isLoading ? <div className="loader">Scanning Assets...</div> : 
+        {isLoading ? <p>Loading...</p> : 
           ownedNFTs?.length > 0 ? ownedNFTs.map(nft => (
             <div key={nft.metadata.id} className="nft-card inv-card">
               <img src={nft.metadata.image} />
               <div className="nft-info">
                 <h3>{nft.metadata.name}</h3>
-                <div className="sale-controls">
-                  <input type="number" value={listPrice} onChange={(e) => setListPrice(e.target.value)} className="price-input" />
-                  <Web3Button
-                    contractAddress={MARKETPLACE_ADDR}
-                    action={() => createListing({
-                      assetContractAddress: collectionAddr,
-                      tokenId: nft.metadata.id,
-                      pricePerToken: listPrice,
-                    })}
-                    onSuccess={() => alert("Listed on Marketplace!")}
-                  >SELL</Web3Button>
-                </div>
+                <input type="number" value={listPrice} onChange={(e) => setListPrice(e.target.value)} className="price-input" />
+                <Web3Button
+                  contractAddress={MARKETPLACE_ADDR}
+                  action={() => createListing({
+                    assetContractAddress: collectionAddr,
+                    tokenId: nft.metadata.id,
+                    pricePerToken: listPrice,
+                  })}
+                >LIST SALE</Web3Button>
               </div>
             </div>
-          )) : <p className="empty-msg">No assets found. Try Minting one!</p>
+          )) : <p>No NFTs found.</p>
         }
       </div>
     </div>
