@@ -4,52 +4,88 @@ import { useState, useEffect } from "react";
 const MARKETPLACE_ADDR = "0xa01C729Ee0Ee812faFa0096D2ccEA8D6e1De6ECb";
 
 export default function Home() {
+  // 1. Safe Hydration Check
+  const [isMounted, setIsMounted] = useState(false);
   const [tab, setTab] = useState("market");
-  const [mounted, setMounted] = useState(false);
   const address = useAddress();
 
-  // جلوگیری از ارور کلاینت با اطمینان از لود شدن کامل صفحه
   useEffect(() => {
-    setMounted(true);
+    setIsMounted(true);
   }, []);
 
+  // 2. Load Contract Hooks (Always at top level)
   const { contract: market } = useContract(MARKETPLACE_ADDR, "marketplace-v3");
-  const { data: listings, isLoading } = useDirectListings(market);
+  const { data: listings, isLoading: loadingListings } = useDirectListings(market);
 
-  if (!mounted) return null;
+  // 3. Render NOTHING on server to prevent crash
+  if (!isMounted) return null;
 
   return (
     <div className="container">
+      {/* Header */}
       <header className="header">
-        <div className="logo-section"><h1>COSMIC MARKET</h1></div>
-        <ConnectWallet theme="dark" />
+        <div className="brand">
+          <div className="brand-glow"></div>
+          <h1>COSMIC <span className="pro-tag">PRO</span></h1>
+        </div>
+        <div className="connect-wrapper">
+            <ConnectWallet theme="dark" btnTitle="Connect" />
+        </div>
       </header>
 
+      {/* Navigation */}
       <nav className="nav-bar">
-        <button onClick={() => setTab("market")} className={tab === "market" ? "active" : ""}>Market</button>
-        <button onClick={() => setTab("inventory")} className={tab === "inventory" ? "active" : ""}>Inventory</button>
+        <button className={tab === "market" ? "active" : ""} onClick={() => setTab("market")}>Market</button>
+        <button className={tab === "inventory" ? "active" : ""} onClick={() => setTab("inventory")}>Inventory</button>
+        <button className={tab === "sell" ? "active" : ""} onClick={() => setTab("sell")}>Sell</button>
       </nav>
 
-      <main className="main-content">
-        {tab === "market" ? (
-          isLoading ? <p className="loader">Loading Galaxy...</p> : (
-            <div className="grid">
-              {listings?.map((l) => (
-                <div key={l.id} className="nft-card">
-                  <img src={l.asset.image} alt="nft" className="img-nft" />
-                  <div className="nft-info">
-                    <h3>{l.asset.name}</h3>
-                    <p className="price">{l.currencyValuePerToken.displayValue} MATIC</p>
-                    <Web3Button contractAddress={MARKETPLACE_ADDR} action={() => market.directListings.buyFromListing(l.id, 1)}>Buy Now</Web3Button>
-                  </div>
+      {/* Main Content */}
+      <main className="content-area">
+        {tab === "market" && (
+            loadingListings ? (
+                <div className="loader-box"><div className="spinner"></div><p>Syncing Blockchain...</p></div>
+            ) : (
+                <div className="grid">
+                    {listings && listings.length > 0 ? listings.map((l) => (
+                        <div key={l.id} className="card">
+                            <div className="card-img">
+                                <img src={l.asset.image} alt={l.asset.name} />
+                            </div>
+                            <div className="card-info">
+                                <h3>{l.asset.name}</h3>
+                                <div className="price-row">
+                                    <span>Price:</span>
+                                    <span className="price-val">{l.currencyValuePerToken.displayValue} MATIC</span>
+                                </div>
+                                <Web3Button
+                                    contractAddress={MARKETPLACE_ADDR}
+                                    action={() => market.directListings.buyFromListing(l.id, 1)}
+                                    className="buy-btn"
+                                >
+                                    BUY ASSET
+                                </Web3Button>
+                            </div>
+                        </div>
+                    )) : <div className="empty-state">No items found in the market.</div>}
                 </div>
-              ))}
+            )
+        )}
+
+        {tab === "inventory" && (
+            <div className="panel">
+                <h2>Your Inventory</h2>
+                <p>{address ? `Wallet Connected: ${address.slice(0,6)}...${address.slice(-4)}` : "Please Connect Wallet"}</p>
             </div>
-          )
-        ) : (
-          <div className="glass-card">
-            <p>Wallet: {address || "Not Connected"}</p>
-          </div>
+        )}
+
+        {tab === "sell" && (
+            <div className="panel sell-panel">
+                <h2>List Item</h2>
+                <p>Use the form below to sell your NFT.</p>
+                {/* Form Logic Placeholder */}
+                <div className="disabled-form">Listing Form Area</div>
+            </div>
         )}
       </main>
     </div>
