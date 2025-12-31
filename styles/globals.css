@@ -3,16 +3,16 @@ body { margin: 0; background: var(--bg); color: white; font-family: 'Inter', san
 .header { display: flex; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid #1a1a1a; align-items: center; }
 .brand { display: flex; align-items: center; gap: 10px; }
 .dot { width: 12px; height: 12px; background: var(--p); border-radius: 50%; box-shadow: 0 0 15px var(--p); }
-.badge { font-size: 0.7rem; background: var(--s); color: #000; padding: 2px 6px; border-radius: 4px; vertical-align: middle; }
+.badge { font-size: 0.7rem; background: var(--s); color: #000; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
 .nav-cosmic { display: flex; justify-content: center; gap: 10px; padding: 20px; }
 .nav-cosmic button { background: #111; border: 1px solid #222; color: #888; padding: 10px 25px; border-radius: 30px; cursor: pointer; transition: 0.3s; }
 .nav-cosmic button.active { background: var(--p); color: white; border-color: var(--p); box-shadow: 0 0 20px rgba(138,43,226,0.3); }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 20px; }
 .nft-card { background: #0f0f15; border-radius: 20px; border: 1px solid #1a1a1a; overflow: hidden; transition: 0.3s; }
-.nft-card:hover { border-color: var(--p); transform: translateY(-5px); }
 .nft-card img { width: 100%; aspect-ratio: 1; object-fit: cover; }
 .nft-info { padding: 15px; text-align: center; }
-.price { color: var(--s); font-weight: bold; margin-bottom: 15px; }
-.glass-panel { background: rgba(255,255,255,0.03); padding: 40px; border-radius: 30px; max-width: 500px; margin: 40px auto; border: 1px solid #222; text-align: center; }
-.cosmic-input, .price-input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 10px; box-sizing: border-box; }
-.price-input { border-color: var(--s); color: var(--s); text-align: center; }
+.price { color: var(--s); font-weight: bold; margin-bottom: 10px; }
+.glass-panel { background: rgba(255,255,255,0.03); padding: 40px; border-radius: 30px; max-width: 500px; margin: 40px auto; border: 1px solid #222; }
+.cosmic-input, .price-input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: white; border-radius: 10px; text-align: center; }
+.price-input { border-color: var(--s); font-weight: bold; }
+.loader { color: var(--p); font-weight: bold; text-align: center; margin-top: 50px; }
