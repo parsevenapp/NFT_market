@@ -1,40 +1,32 @@
-import { ConnectWallet, useContract, useDirectListings, MediaRenderer, Web3Button } from "@thirdweb-dev/react";
-
-const CONTRACT_ADDR = "0xa01C729Ee0Ee812faFa0096D2ccEA8D6e1De6ECb";
+import { useContract, useNFTs } from "@thirdweb-dev/react";
+import { MARKETPLACE_ADDRESS } from "../const/contractAddresses";
+import Navbar from "../components/Navbar";
 
 export default function Home() {
-  const { contract } = useContract(CONTRACT_ADDR, "marketplace-v3");
-  const { data: listings, isLoading } = useDirectListings(contract);
+  // اتصال به قرارداد هوشمند تو
+  const { contract } = useContract(MARKETPLACE_ADDRESS);
+  // فراخوانی لیست ان‌اف‌تی‌ها (ایندکسر داخلی)
+  const { data: nfts, isLoading } = useNFTs(contract, { start: 0, count: 10 });
 
   return (
-    <div className="container">
-      <header className="header">
-        <h1 className="logo">COSMIC <span>LIVE</span></h1>
-        <ConnectWallet theme="dark" btnTitle="Connect Wallet" />
-      </header>
-
-      <main className="main">
-        <div className="grid">
-          {isLoading ? (
-            <div className="loading">در حال فراخوانی دیتای مارکت...</div>
-          ) : (
-            listings?.map((nft) => (
-              <div key={nft.id} className="card">
-                <MediaRenderer src={nft.asset.image} className="nft-img" />
-                <div className="details">
-                  <h3>{nft.asset.name}</h3>
-                  <p className="price">{nft.currencyValuePerToken.displayValue} MATIC</p>
-                  <Web3Button 
-                    contractAddress={CONTRACT_ADDR} 
-                    action={() => contract.directListings.buyFromListing(nft.id, 1)}
-                  >
-                    BUY NOW
-                  </Web3Button>
-                </div>
+    <div>
+      <Navbar />
+      <main style={{ padding: "2rem" }}>
+        <h2>NFT Collection</h2>
+        
+        {isLoading ? (
+          <p>Loading Marketplace Data...</p>
+        ) : (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "20px" }}>
+            {nfts?.map((nft) => (
+              <div key={nft.metadata.id} style={{ border: "1px solid #444", borderRadius: "10px", padding: "10px" }}>
+                <img src={nft.metadata.image} alt={nft.metadata.name} style={{ width: "100%", borderRadius: "8px" }} />
+                <h3>{nft.metadata.name}</h3>
+                <p>ID: #{nft.metadata.id}</p>
               </div>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
