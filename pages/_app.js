@@ -1,21 +1,13 @@
-import { ThirdwebProvider, coinbaseWallet, localWallet, metamaskWallet, rainbowWallet, trustWallet } from "@thirdweb-dev/react";
-import { Ethereum, Polygon, Base, Arbitrum } from "@thirdweb-dev/chains";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 import "../styles/globals.css";
 import { CLIENT_ID } from "../const/contractAddresses";
+import { SELECTED_CHAIN } from "../const/chains"; // فراخوانی فایل جدید
 
 function MyApp({ Component, pageProps }) {
   return (
     <ThirdwebProvider
-      activeChain={Polygon} // شبکه پیش‌فرض (قابل تغییر به اتریوم یا بیس)
-      supportedChains={[Ethereum, Polygon, Base, Arbitrum]}
+      activeChain={SELECTED_CHAIN} // استفاده از متغیر فایل chains.js
       clientId={CLIENT_ID}
-      supportedWallets={[
-        metamaskWallet(),
-        coinbaseWallet(),
-        rainbowWallet(),
-        trustWallet(),
-        localWallet(),
-      ]}
     >
       <Component {...pageProps} />
     </ThirdwebProvider>
