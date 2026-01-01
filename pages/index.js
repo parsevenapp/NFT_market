@@ -1,30 +1,35 @@
-import { ConnectWallet, useContract, useDirectListings, MediaRenderer } from "@thirdweb-dev/react";
+import { ConnectWallet, useContract, useDirectListings, MediaRenderer, Web3Button } from "@thirdweb-dev/react";
 
-const MARKETPLACE_ADDR = "0xa01C729Ee0Ee812faFa0096D2ccEA8D6e1De6ECb";
+const CONTRACT_ADDR = "0xa01C729Ee0Ee812faFa0096D2ccEA8D6e1De6ECb";
 
 export default function Home() {
-  const { contract } = useContract(MARKETPLACE_ADDR, "marketplace-v3");
+  const { contract } = useContract(CONTRACT_ADDR, "marketplace-v3");
   const { data: listings, isLoading } = useDirectListings(contract);
 
   return (
     <div className="container">
       <header className="header">
-        <h1 className="logo">COSMIC <span>MARKET</span></h1>
-        <ConnectWallet theme="dark" />
+        <h1 className="logo">COSMIC <span>LIVE</span></h1>
+        <ConnectWallet theme="dark" btnTitle="Connect Wallet" />
       </header>
 
       <main className="main">
         <div className="grid">
           {isLoading ? (
-            <p>در حال بارگذاری مارکت‌پلیس...</p>
+            <div className="loading">در حال فراخوانی دیتای مارکت...</div>
           ) : (
-            listings?.map((listing) => (
-              <div key={listing.id} className="card">
-                <MediaRenderer src={listing.asset.image} className="nft-image" />
-                <div className="info">
-                  <h3>{listing.asset.name}</h3>
-                  <p>{listing.currencyValuePerToken.displayValue} MATIC</p>
-                  <button className="buy-btn">مشاهده جزئیات</button>
+            listings?.map((nft) => (
+              <div key={nft.id} className="card">
+                <MediaRenderer src={nft.asset.image} className="nft-img" />
+                <div className="details">
+                  <h3>{nft.asset.name}</h3>
+                  <p className="price">{nft.currencyValuePerToken.displayValue} MATIC</p>
+                  <Web3Button 
+                    contractAddress={CONTRACT_ADDR} 
+                    action={() => contract.directListings.buyFromListing(nft.id, 1)}
+                  >
+                    BUY NOW
+                  </Web3Button>
                 </div>
               </div>
             ))
