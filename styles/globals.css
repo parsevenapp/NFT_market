@@ -1,10 +1,40 @@
-body { background: #050505; color: white; margin: 0; font-family: sans-serif; }
-.header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid #222; }
-.logo span { color: #00ffa3; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; padding: 40px; }
-.card { background: #111; border-radius: 12px; border: 1px solid #222; overflow: hidden; transition: 0.2s; }
-.card:hover { border-color: #00ffa3; transform: translateY(-5px); }
-.nft-img { width: 100%; height: 240px; object-fit: cover; }
-.details { padding: 15px; }
-.price { color: #00ffa3; font-weight: bold; margin-bottom: 15px; }
-.loading { grid-column: 1/-1; text-align: center; padding: 100px; color: #666; }
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* افکت کارتهای ان‌اف‌تی */
+.nft-card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #333;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.nft-card:hover {
+  transform: translateY(-5px);
+  border-color: #555;
+}
+
+.nft-image {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 8px;
+}
