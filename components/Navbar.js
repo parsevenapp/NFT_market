@@ -15,7 +15,7 @@ export default function Navbar() {
       top: 0,
       zIndex: 1000
     }}>
-      {/* لوگو و لینک‌های اصلی */}
+      {/* بخش سمت چپ: لوگو و لینک‌های اصلی بازار */}
       <div style={{ display: "flex", alignItems: "center", gap: "25px" }}>
         <Link href="/" style={{ fontSize: "1.4rem", fontWeight: "bold", color: "#fff", textDecoration: "none" }}>
           Cosmic Market
@@ -25,20 +25,28 @@ export default function Navbar() {
           <Link href="/" style={{ color: "#aaa", textDecoration: "none" }}>Market</Link>
           <Link href="/mint" style={{ color: "#aaa", textDecoration: "none" }}>Mint</Link>
           <Link href="/sell" style={{ color: "#aaa", textDecoration: "none" }}>Sell</Link>
-          <Link href="/inventory" style={{ color: "#aaa", textDecoration: "none" }}>Inventory</Link>
           <Link href="/transactions" style={{ color: "#aaa", textDecoration: "none" }}>History</Link>
         </div>
       </div>
 
-      {/* بخش پروفایل و دکمه اتصال */}
+      {/* بخش سمت راست: انبار و پروفایل کاربر */}
       <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-        <Link href="/profile" style={{ color: "#00ffad", textDecoration: "none", fontSize: "0.9rem" }}>
+        <Link href="/inventory" style={{ color: "#aaa", textDecoration: "none", fontSize: "0.9rem" }}>
+          Inventory
+        </Link>
+        <Link href="/profile" style={{ 
+          color: "#00ffad", 
+          textDecoration: "none", 
+          fontSize: "0.9rem",
+          border: "1px solid #00ffad",
+          padding: "5px 12px",
+          borderRadius: "20px"
+        }}>
           My Profile
         </Link>
         <ConnectWallet 
           theme="dark"
           btnTitle="Connect"
-          className="my-connect-button"
         />
       </div>
     </nav>
