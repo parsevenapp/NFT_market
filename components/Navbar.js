@@ -1,53 +1,58 @@
-import { ConnectWallet } from "@thirdweb-dev/react";
+import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
 export default function Navbar() {
+  const address = useAddress();
+
   return (
-    <nav style={{ 
-      display: "flex", 
-      justifyContent: "space-between", 
-      padding: "1rem 2rem", 
+    <nav style={{
+      display: "flex",
+      justifyContent: "space-between",
       alignItems: "center",
+      padding: "1rem 5%",
+      background: "rgba(0,0,0,0.9)",
       borderBottom: "1px solid #222",
-      backgroundColor: "#000",
       position: "sticky",
       top: 0,
-      zIndex: 1000
+      zIndex: 1000,
+      backdropFilter: "blur(10px)"
     }}>
-      {/* بخش سمت چپ: لوگو و لینک‌های اصلی بازار */}
-      <div style={{ display: "flex", alignItems: "center", gap: "25px" }}>
-        <Link href="/" style={{ fontSize: "1.4rem", fontWeight: "bold", color: "#fff", textDecoration: "none" }}>
-          Cosmic Market
-        </Link>
-        
-        <div style={{ display: "flex", gap: "15px", fontSize: "0.9rem" }}>
-          <Link href="/" style={{ color: "#aaa", textDecoration: "none" }}>Market</Link>
-          <Link href="/mint" style={{ color: "#aaa", textDecoration: "none" }}>Mint</Link>
-          <Link href="/sell" style={{ color: "#aaa", textDecoration: "none" }}>Sell</Link>
-          <Link href="/transactions" style={{ color: "#aaa", textDecoration: "none" }}>History</Link>
-        </div>
+      {/* لوگو */}
+      <Link href="/" style={{ fontSize: "1.5rem", fontWeight: "bold", background: "linear-gradient(to right, #fff, #aaa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+        Cosmic
+      </Link>
+
+      {/* منوی وسط - با قابلیت اسکرول افقی در موبایل */}
+      <div style={{
+        display: "flex",
+        gap: "20px",
+        overflowX: "auto",
+        padding: "0 10px",
+        maxWidth: "60%" // جلوگیری از برخورد با دکمه ولت
+      }}>
+        <Link href="/" style={{ color: "#ccc", whiteSpace: "nowrap" }}>Market</Link>
+        <Link href="/mint" style={{ color: "#ccc", whiteSpace: "nowrap" }}>Mint</Link>
+        <Link href="/sell" style={{ color: "#ccc", whiteSpace: "nowrap" }}>Sell</Link>
+        <Link href="/inventory" style={{ color: "#ccc", whiteSpace: "nowrap" }}>Inventory</Link>
+        <Link href="/transactions" style={{ color: "#ccc", whiteSpace: "nowrap" }}>History</Link>
       </div>
 
-      {/* بخش سمت راست: انبار و پروفایل کاربر */}
-      <div style={{ display: "flex", alignItems: "center", gap: "15px" }}>
-        <Link href="/inventory" style={{ color: "#aaa", textDecoration: "none", fontSize: "0.9rem" }}>
-          Inventory
-        </Link>
-        <Link href="/profile" style={{ 
-          color: "#00ffad", 
-          textDecoration: "none", 
-          fontSize: "0.9rem",
-          border: "1px solid #00ffad",
-          padding: "5px 12px",
-          borderRadius: "20px"
-        }}>
-          My Profile
-        </Link>
-        <ConnectWallet 
-          theme="dark"
-          btnTitle="Connect"
-        />
+      {/* دکمه‌های سمت راست */}
+      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        {address && (
+           <Link href="/profile" style={{ 
+             display: "none", // در موبایل خیلی کوچک مخفی شود تا جا باشد
+             border: "1px solid #333", 
+             padding: "8px 12px", 
+             borderRadius: "12px",
+             fontSize: "0.85rem",
+             color: "#fff"
+           }}>
+             Profile
+           </Link>
+        )}
+        <ConnectWallet theme="dark" btnTitle="Connect" modalSize="compact" />
       </div>
     </nav>
   );
