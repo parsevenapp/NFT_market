@@ -1,13 +1,12 @@
 import { ThirdwebProvider } from "@thirdweb-dev/react";
+import { Polygon } from "@thirdweb-dev/chains";
 import "../styles/globals.css";
-import { CLIENT_ID } from "../const/contractAddresses";
-import { SELECTED_CHAIN } from "../const/chains"; // فراخوانی فایل جدید
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ThirdwebProvider
-      activeChain={SELECTED_CHAIN} // استفاده از متغیر فایل chains.js
-      clientId={CLIENT_ID}
+    <ThirdwebProvider 
+      activeChain={Polygon} 
+      clientId="a98083f883a97f19e073829656d7fd42"
     >
       <Component {...pageProps} />
     </ThirdwebProvider>
