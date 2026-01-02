@@ -1,39 +1,38 @@
-import { useAddress, useContract, useOwnedNFTs } from "@thirdweb-dev/react";
-import { MARKETPLACE_ADDRESS } from "../const/contractAddresses";
-import Navbar from "../components/Navbar";
-import NFTCard from "../components/NFTCard";
+import { useAddress, useContract, useOwnedNFTs, ThirdwebNftMedia } from "@thirdweb-dev/react";
+import styles from "../styles/Home.module.css";
+
+const CONTRACT_ADDRESS = "0xa01C729Ee0Ee812faFa0096D2ccEA8D6e1De6ECb";
 
 export default function Inventory() {
   const address = useAddress();
-  const { contract } = useContract(MARKETPLACE_ADDRESS, "marketplace-v3");
-  
-  // فراخوانی تمام ان‌اف‌تی‌هایی که ولتِ متصل شده مالک آن‌هاست
+  const { contract } = useContract(CONTRACT_ADDRESS);
   const { data: ownedNFTs, isLoading } = useOwnedNFTs(contract, address);
 
   return (
-    <div>
-      <Navbar />
-      <main style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}>
-        <h1>Your Assets</h1>
-        <p style={{ color: "#888" }}>ان‌اف‌تی‌هایی که در اختیار دارید.</p>
+    <div className={styles.main}>
+      <h1 className={styles.title}>Your Inventory</h1>
+      <p className={styles.description}>Manage the NFTs you own on Polygon</p>
 
-        {!address ? (
-          <p>لطفاً ولت خود را وصل کنید.</p>
-        ) : isLoading ? (
-          <p>در حال بارگذاری دارایی‌ها...</p>
-        ) : (
-          <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", 
-            gap: "25px",
-            marginTop: "30px"
-          }}>
-            {ownedNFTs?.map((nft) => (
-              <NFTCard key={nft.metadata.id} nft={nft} />
-            ))}
-          </div>
-        )}
-      </main>
+      {!address ? (
+        <p>Please connect your wallet to see your NFTs.</p>
+      ) : isLoading ? (
+        <p>Loading your collection...</p>
+      ) : ownedNFTs?.length === 0 ? (
+        <p>No NFTs found in this wallet.</p>
+      ) : (
+        <div className={styles.grid}>
+          {ownedNFTs.map((nft) => (
+            <div key={nft.metadata.id} className={styles.card}>
+              <ThirdwebNftMedia 
+                metadata={nft.metadata} 
+                style={{ width: "100%", borderRadius: "10px", height: "200px", objectFit: "cover" }} 
+              />
+              <h3 style={{ marginTop: "10px", color: "#fff" }}>{nft.metadata.name}</h3>
+              <p style={{ fontSize: "0.8rem", color: "#888" }}>ID: #{nft.metadata.id}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
