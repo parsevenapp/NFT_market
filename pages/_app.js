@@ -1,7 +1,7 @@
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-import "../styles/globals.css";
 import { CLIENT_ID } from "../const/contractAddresses";
 import { SELECTED_CHAIN } from "../const/chains";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
