@@ -11,7 +11,7 @@ export default function Mint() {
   const [file, setFile] = useState(null);
 
   return (
-    <div style={{ padding: "20px", color: "white", background: "#000" }}>
+    <div style={{ padding: "20px", color: "white" }}>
       <h1>Create NFT</h1>
       
       <input type="file" onChange={(e) => setFile(e.target.files[0])} style={{ marginBottom: "15px" }} />
@@ -28,13 +28,13 @@ export default function Mint() {
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        style={{ width: "100%", padding: "10px", marginBottom: "20px", background: "#222", color: "#fff", minHeight: "80px" }}
+        style={{ width: "100%", padding: "10px", marginBottom: "20px", background: "#222", color: "#fff", minHeight: "100px" }}
       />
 
       <Web3Button
         contractAddress={MARKETPLACE_ADDRESS}
         action={async () => {
-          if (!file) return alert("Select an image!");
+          if (!file) return alert("Select image!");
           const uris = await upload({ data: [file] });
           await contract.erc721.mint({
             name: name,
@@ -42,7 +42,7 @@ export default function Mint() {
             image: uris[0],
           });
         }}
-        onSuccess={() => alert("Success!")}
+        onSuccess={() => alert("Minted!")}
         onError={(err) => alert("Error: " + err.message)}
       >
         Mint NFT
